@@ -104,11 +104,12 @@ SHARED_APPS = (
     'django.contrib.contenttypes',
     
     # everything below here is optional
-    # 'django.contrib.auth',
-    # 'django.contrib.sessions',
-    # # 'django.contrib.sites',
-    # 'django.contrib.messages',
-    # 'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.sessions',
+    # 'django.contrib.sites',
+    'django.contrib.messages',
+    'django.contrib.admin',
+    'django.contrib.staticfiles',
 )
 
 TENANT_APPS = (
@@ -120,7 +121,7 @@ TENANT_APPS = (
     'django.contrib.sessions',
     # 'django.contrib.sites',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
+    # 'django.contrib.staticfiles',
 
     # your tenant-specific apps
     
@@ -128,22 +129,23 @@ TENANT_APPS = (
     # 'myapp.houses',
 )
 
-INSTALLED_APPS = [
-    'tenant_schemas',
+INSTALLED_APPS = list(set(SHARED_APPS + TENANT_APPS))
+# INSTALLED_APPS = [
+#     'tenant_schemas',
 
-    'customers',
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    # 'django.contrib.sites',  
-    'rest_framework', 
+#     'customers',
+#     'django.contrib.admin',
+#     'django.contrib.auth',
+#     'django.contrib.contenttypes',
+#     'django.contrib.sessions',
+#     'django.contrib.messages',
+#     'django.contrib.staticfiles',
+#     # 'django.contrib.sites',  
+#     'rest_framework', 
 
-    "users",
-    "books",
-]
+#     "users",
+#     "books",
+# ]
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -201,3 +203,7 @@ STATIC_URL = '/static/'
 #         },
 #     },
 # }
+
+
+# https://github.com/bernardopires/django-tenant-schemas/issues/380
+# https://github.com/django-tenants/django-tenants/issues/61

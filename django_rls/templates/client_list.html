@@ -1,0 +1,55 @@
+
+<html>
+<head>
+
+</head>
+<body>
+
+    <h1>Clients</h1>
+
+    <table class="table" border="2">
+        <thead class="thead-light">
+        <tr>
+            <th>Name</th>
+            <th> Salesperson </th>
+            {% comment %} <th>Email</th>
+            <th>Age</th>
+            <th>Semester</th>
+            <th>Gender</th>
+            <th></th>
+            <th></th>
+            <th></th> {% endcomment %}
+        </tr>
+        </thead>
+        <tbody>
+            {% for client in clients %}
+            <tr>
+                <td>{{ client.name }}</td>
+                <td>{{ client.salesperson }}</td>
+                <td>
+                    
+                    <a  href="{% url 'client_detail'  client.id  %}">Details</a>
+                    
+                </td>
+                <td>
+                    {% comment %} {% if client.user_id.id == user.id  and user.is_authenticated %} {% endcomment %}
+                    <a  href="{% url 'client_update'  client.id  %}">Update</a>
+                </td>
+                <td>
+                    {% comment %} <a  href="{% url 'client_delete'  client.id  %}">Delete</a> {% endcomment %}
+                </td>
+                
+                {% comment %} <td>{{ client.user_id.email }}</td>
+                <td>{{ student.age }}</td>
+                <td>{{ student.semester }}</td>
+                <td>{{ student.gender }}</td> {% endcomment %}
+                
+            </tr>
+           
+
+            {% endfor %}
+
+        </tbody>
+    </table>
+</body>
+</html>

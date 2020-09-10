@@ -1,0 +1,24 @@
+<html>
+<head>
+
+</head>
+<body>
+ <h1>Update</h1>
+<div class="card">
+    <div class="card-header">
+    {% if client.id %}
+        <h5 class="card-title">Client Update #{{ client.id }}</h5>
+    </div>
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{form.as_p}}
+            <button type="submit" class="btn btn-success">Update</button>
+        </form>
+    </div>
+    {% else %}
+    <p> You don't have permission for Update </p>
+    {% endif %}
+</div>
+</body>
+</html>

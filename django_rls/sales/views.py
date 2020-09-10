@@ -12,29 +12,19 @@ class ClientListView(ListView):
     model = Client
     template_name = 'client_list.html'
     context_object_name = 'clients'
-    # paginate_by = 5
 
     def get_context_data(self, **kwargs):
         context = super(ClientListView, self).get_context_data(**kwargs)
-        print("------here--------")
         with connection.cursor() as cursor:
-            cursor.execute("SELECT privilege_type FROM information_schema.role_table_grants where table_name::text = %s and grantee=%s",["sales_client","29"])
-
-            # cursor.execute("SELECT privilege_type FROM information_schema.role_table_grants where table_name::text = %s and grantee=%s",["sales_client","29"])
+            cursor.execute("SELECT privilege_type FROM information_schema.role_table_grants where table_name::text = %s and grantee=%s",["sales_client",str(self.request.user.id)])
             temp = cursor.fetchall()
         
         clients = None
-        print("------temp------",temp)
         for all_data in temp:
             if 'SELECT' in all_data:
-                clients = self.get_queryset().filter(salesperson=29)
-                print("-------clinets---------",clients)
-            # else:
-            #     clients = None
-            #     print("-------else--------")
+                clients = self.get_queryset().filter(salesperson=str(self.request.user.id))
+           
         # clients = self.get_queryset()
-        # page = self.request.GET.get('page')
-       
         context['clients'] = clients
         return context
 
@@ -52,25 +42,21 @@ class ClientUpdateView(UpdateView):
         context = super().get_context_data(**kwargs)
 
         with connection.cursor() as cursor:
-            cursor.execute("SELECT privilege_type FROM information_schema.role_table_grants where table_name::text = %s and grantee=%s",["sales_client","29"])
+            cursor.execute("SELECT privilege_type FROM information_schema.role_table_grants where table_name::text = %s and grantee=%s",["sales_client",str(self.request.user.id)])
             temp = cursor.fetchall()
         
-        client = None
-        print("------temp------",temp)
+        client_data = None
         for all_data in temp:
             if 'UPDATE' in all_data:
-                client = self.get_queryset().filter(salesperson=29)
-                print("-------clinets---------",client)
-                context['title'] = 'Update'
-                context['client'] = client
-                return context
-            else:
-                print("_______you can't update_______")
-
-        return None
-        # context['title'] = 'Update'
-        # context['client'] = client
-        # return context
+                client_data = self.get_queryset().filter(salesperson=str(self.request.user.id))
+                for data in client_data:
+                    if data.id == self.object.id:
+                        context['title'] = 'Update'
+                        context['client_data'] = client_data
+                        return context
+        
+        if not client_data:
+            return None
 
     def get_success_url(self):
         return reverse_lazy('client_detail', kwargs={'pk': self.object.id})
